@@ -17,9 +17,10 @@ namespace curso.api.tests.Integrations.Controller
     {
 
         private readonly WebApplicationFactory<Startup> _factory;
-        private readonly HttpClient _httpClient;
-        private readonly ITestOutputHelper _output;
+        protected readonly HttpClient _httpClient;
+        protected readonly ITestOutputHelper _output;
         protected RegistroViewModelInput registroViewModelInput;
+        protected LoginViewModelOutput loginViewModelOutput;
 
         public UsuarioControllerTests(WebApplicationFactory<Startup> factory, ITestOutputHelper output)
         {
@@ -36,6 +37,7 @@ namespace curso.api.tests.Integrations.Controller
         public async Task InitializeAsync()
         {
             await Registrar_InformandoUsuarioESenhaExistentes_DeveRetornarSucesso();
+            await Logar_InformandoUsuarioESenhaExistentes_DeveRetornarSucesso();
         }
 
         //WhenGivenThen
@@ -54,7 +56,7 @@ namespace curso.api.tests.Integrations.Controller
             // Act
             var httpClientRequest = await _httpClient.PostAsync("api/v1/usuario/logar", content);
 
-            var loginViewModelOutput = JsonConvert.DeserializeObject<LoginViewModelOutput>(await httpClientRequest.Content.ReadAsStringAsync());
+            loginViewModelOutput = JsonConvert.DeserializeObject<LoginViewModelOutput>(await httpClientRequest.Content.ReadAsStringAsync());
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, httpClientRequest.StatusCode);
