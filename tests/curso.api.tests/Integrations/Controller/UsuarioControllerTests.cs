@@ -1,5 +1,4 @@
-﻿using Bogus.Extensions;
-using curso.api.Models.Usuarios;
+﻿using curso.api.Models.Usuarios;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
@@ -7,7 +6,6 @@ using System.Text;
 using System.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System.Threading.Tasks;
 using AutoBogus;
 
@@ -50,7 +48,6 @@ namespace curso.api.tests.Integrations.Controller
                 Login = registroViewModelInput.Login,
                 Senha = registroViewModelInput.Senha
             };
-
             StringContent content = new StringContent(JsonConvert.SerializeObject(loginViewModelInput), Encoding.UTF8, "application/json");
 
             // Act
@@ -62,7 +59,7 @@ namespace curso.api.tests.Integrations.Controller
             Assert.Equal(HttpStatusCode.OK, httpClientRequest.StatusCode);
             Assert.NotNull(loginViewModelOutput.Token);
             Assert.Equal(loginViewModelInput.Login, loginViewModelOutput.Usuario.Login);
-            _output.WriteLine(loginViewModelOutput.Token);
+            _output.WriteLine($"{nameof(UsuarioControllerTests)}_{nameof(Logar_InformandoUsuarioESenhaExistentes_DeveRetornarSucesso)} = {await httpClientRequest.Content.ReadAsStringAsync()}");
         }
 
         [Fact]
